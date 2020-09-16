@@ -1,26 +1,26 @@
-# Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
 #
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 #
 # ORACLE DOCKERFILES PROJECT
 # --------------------------
-# This is the Dockerfile for Oracle JDK 11
+# This is the Dockerfile for Oracle JDK 15
 #
 # REQUIRED FILES TO BUILD THIS IMAGE
 # ----------------------------------
 #
-# (1) jdk-11.XX_linux-x64_bin.tar.gz
-#     Download from https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html
+# (1) jdk-15.XX_linux-x64_bin.tar.gz
+#     Download from https://www.oracle.com/java/technologies/javase-jdk15-downloads.html
 #
 # HOW TO BUILD THIS IMAGE
 # -----------------------
 # Put all downloaded files in the same directory as this Dockerfile
 # Run:
-#      $ docker build -t oracle/jdk:11 ..
+#      $ docker build -t oracle/jdk:15 ..
 #
 # This command is already scripted on build.sh so you can alternatively run
 #		$ bash build.sh
-
+#
 # The builder image will be use to uncompress the tar.gz file with the Java Runtime.
 
 FROM oraclelinux:7-slim as builder
@@ -41,9 +41,9 @@ ENV LANG en_US.UTF-8
 # Environment variables for the builder image.  
 # Required to validate that you are using the correct file
 
-ENV JAVA_PKG=jdk-11.0.7_linux-x64_bin.tar.gz \
-	JAVA_SHA256=a7334a400fe9a9dbb329e299ca5ebab6ec969b5659a3a72fe0d6f981dbca0224 \
-	JAVA_HOME=/usr/java/jdk-11
+ENV JAVA_PKG=jdk-15_linux-x64_bin.tar.gz \
+	JAVA_SHA256=300538e0c227c268f14957294d5c44abb5e7e476debc9d07e8d892c417ac8f0d \
+	JAVA_HOME=/usr/java/jdk-15
 
 ##
 COPY $JAVA_PKG /tmp/jdk.tgz
@@ -59,8 +59,8 @@ FROM oraclelinux:7-slim
 # Default to UTF-8 file.encoding
 ENV LANG en_US.UTF-8
 
-ENV JAVA_VERSION=11.0.7 \
-	JAVA_HOME=/usr/java/jdk-11
+ENV JAVA_VERSION=15 \
+	JAVA_HOME=/usr/java/jdk-15
 
 ENV	PATH $JAVA_HOME/bin:$PATH	
 
