@@ -1,28 +1,27 @@
 #!/bin/bash
 #
-# Copyright (c) 2020 Oracle and/or its affiliates.
+# # Copyright (c) 2019,2020 Oracle and/or its affiliates.
 #
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 #
-# Author: OIG Development 
+# Author: Kaushik C
 #
-# Description: script to build a Docker image for Oracle Identity Governance 
+# Description: script to build a Docker image for Oracle Access Manager 
 #
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+#
+#
 usage() {
 cat << EOF
 
-Usage: buildDockerImage.sh -v [version]
-Builds a Docker Image for Oracle Identity Governance
+Usage: buildDockerImage.sh -v [version] [-s]
+Builds a Docker Image for Oracle OAM Suite .
 
 Parameters:
    -h: view usage
-   -v: Release version to build. Required. Supported: 12.2.1.4.0
-   -s: skips the MD5 check of packages (DEFAULT)
-
-LICENSE Universal Permissive License (UPL), Version 1.0
-Copyright (c) 2020 Oracle and/or its affiliates.
+   -v: Release version to build. Required. E.g 12.2.1.4.0
+   -s: skips the MD5 check of package. Optional.
 
 EOF
 exit 0
@@ -31,6 +30,10 @@ exit 0
 
 # Validate packages
 checksumPackages() {
+  if [ "${SKIPMD5}" -eq 1 ]; then
+    echo "INFO: Skipped MD5 checksum as requested"
+    return
+  fi
   echo "Checking if required packages are present and valid..."
   md5sum -c *.download
   if [ "$?" -ne 0 ]; then
@@ -42,8 +45,8 @@ checksumPackages() {
 
 #Parameters
 VERSION="12.2.1.4.0"
-SKIPMD5=1
-while getopts "hsdgiv:t:" optname; do
+SKIPMD5=0
+while getopts "hsv:" optname; do
   case "$optname" in
     "h")
       usage
@@ -54,15 +57,15 @@ while getopts "hsdgiv:t:" optname; do
     "v")
       VERSION="$OPTARG"
       ;;
-    *)
-      # Should not occur
-      echo "ERROR: Invalid argument. buildDockerImage.sh"
+      *)
+    # Should not occur
+      echo "Unknown error while processing options inside buildDockerImage.sh"
       ;;
   esac
 done
 
-# OIM Image Name
-IMAGE_NAME="oracle/oig:$VERSION"
+# OAM Image Name
+IMAGE_NAME="oracle/oam:$VERSION"
 DOCKERFILE_NAME="Dockerfile"
 
 
@@ -112,7 +115,7 @@ echo ""
 
 if [ $? -eq 0 ]; then
 cat << EOF
-  Oracle OIM suite Docker Image for version: $VERSION is ready to be extended.
+  Oracle OAM suite Docker Image for version: $VERSION is ready to be extended.
 
     --> $IMAGE_NAME
 
@@ -120,5 +123,5 @@ cat << EOF
 
 EOF
 else
-  echo "Oracle OIM Docker Image was NOT successfully created. Check the output and correct any reported problems with the docker build operation."
+  echo "Oracle OAM Docker Image was NOT successfully created. Check the output and correct any reported problems with the docker build operation."
 fi
