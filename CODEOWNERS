@@ -1,7 +1,7 @@
 # The last matching pattern has the most precedence.
-*                         @Djelibeybi @gvenzl @mriccell
+*                         @Djelibeybi @gvenzl @mriccell @rjeberhard @mark-au
 /GraalVM/                 @mzachh
-/NoSQL/                   @anandchandak
+/NoSQL/                   @NoSQLGuy
 /OracleAccessManagement/  @pratdash-orcl
 /OracleBI/                @sjvp
 /OracleCoherence/         @thegridman
@@ -13,10 +13,11 @@
 /OracleIdentityGovernance/  @rishiagarwal-oracle
 /OracleInstantClient/     @cjbj
 /OracleJava/              @aureliogrb @Djelibeybi
-/OracleLinuxDevelopers/   @Djelibeybi @mark-au
+/OracleLinuxDevelopers/   @Djelibeybi @mark-au @totalamateurhour
 /OracleRestDataServices/  @gvenzl
 /OracleSOASuite/          @knvijay @rdas0405
 /OracleWebCenterSites/    @prshshuk
 /OracleWebLogic/          @mriccell
 /OracleUnifiedDirectory/  @kuldeepbshah @surya902
 /OracleUnifiedDirectorySM/  @kuldeepbshah @surya902
+/OracleWebCenterPortal/    @dgothe
