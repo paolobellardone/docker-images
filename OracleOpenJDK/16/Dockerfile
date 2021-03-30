@@ -1,48 +1,48 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2021 Oracle and/or its affiliates.
 #
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 #
 # ORACLE DOCKERFILES PROJECT
 # --------------------------
-# This is the Dockerfile for Oracle OpenJDK 14
+# This is the Dockerfile for Oracle OpenJDK 16
 #
 # REQUIRED FILES TO BUILD THIS IMAGE
 # ----------------------------------
 #
-# (1) openjdk-14.xx_linux-x64_bin.tar.gz
-#     Downloaded from https://jdk.java.net/14/
+# (1) openjdk-16.xx_linux-x64_bin.tar.gz
+#     Downloaded from https://jdk.java.net/16/
 #
 # HOW TO BUILD THIS IMAGE
 # -----------------------
 # Run:
-#      $ docker build -t oracle/openjdk:14 .
+#      $ docker build -t oracle/openjdk:16 .
 #
 # This command is already scripted in build.sh so you can alternatively run
 #		$ bash build.sh
 #
 
-FROM oraclelinux:7-slim
+FROM oraclelinux:8-slim
 
 MAINTAINER Aurelio Garcia-Ribeyro <aurelio.garciaribeyro@oracle.com>
 
 
-ENV JAVA_PKG=https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz \
-	JAVA_SHA256=91310200f072045dc6cef2c8c23e7e6387b37c46e9de49623ce0fa461a24623d \
-	JAVA_VERSION=14.0.2 \
-	JAVA_HOME=/usr/java/jdk-14 \
+ENV JAVA_PKG=https://download.java.net/java/GA/jdk16/7863447f0ab643c585b9bdebf67c69db/36/GPL/openjdk-16_linux-x64_bin.tar.gz \
+	JAVA_SHA256=e952958f16797ad7dc7cd8b724edd69ec7e0e0434537d80d6b5165193e33b931 \
+	JAVA_VERSION=16 \
+	JAVA_HOME=/usr/java/jdk-16 \
 	LANG=en_US.UTF-8
 
 ENV	PATH $JAVA_HOME/bin:$PATH
 	
 # Since the files is compressed as tar.gz first yum install gzip and tar
 RUN set -eux; \
-	yum install -y \
+	microdnf install -y \
 		gzip \
 		tar \
 		# JDK assumes freetype is available		
 		freetype fontconfig \
 	; \
-	rm -rf /var/cache/yum ; \
+	microdnf clean all; \
 	curl --output /tmp/jdk.tgz "$JAVA_PKG" && \
 	echo "$JAVA_SHA256 */tmp/jdk.tgz" | sha256sum -c -; \
 	mkdir -p "$JAVA_HOME"; \
@@ -59,7 +59,8 @@ RUN ln -sfT "$JAVA_HOME" /usr/java/default; \
 # -Xshare:dump will create a CDS archive to improve startup in subsequent runs	
 	java -Xshare:dump; \
 	java --version; \
-	javac --version
+	javac --version; \
+	grep VERSION= /etc/os-release
 
 CMD ["jshell"]
 
